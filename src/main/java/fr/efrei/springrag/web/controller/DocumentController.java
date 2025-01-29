@@ -1,8 +1,7 @@
 package fr.efrei.springrag.web.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
 import fr.efrei.springrag.domain.Document;
-import fr.efrei.springrag.repository.dto.DocumentDTO;
+import fr.efrei.springrag.domain.dto.DocumentDto;
 import fr.efrei.springrag.service.DocumentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +33,9 @@ public class DocumentController {
         return ResponseEntity.ok(documents);
     }
     @GetMapping("/documents/dto")
-    public ResponseEntity<List<DocumentDTO>> getAllDocumentsDTO() {
+    public ResponseEntity<List<DocumentDto>> getAllDocumentsDTO() {
         log.debug("REST request to get all Documents DTO");
-        List<DocumentDTO> documents = documentService.findAllDTO();
+        List<DocumentDto> documents = documentService.findAllDTO();
         return ResponseEntity.ok(documents);
     }
     @GetMapping("/documents/{id}")
@@ -44,5 +43,11 @@ public class DocumentController {
         log.debug("REST request to get Document : {}", id);
         Document document = documentService.findById(id).orElse(null);
         return ResponseEntity.ok(document);
+    }
+
+    @PostMapping("/documents/chat2/{user}")
+    public String chat2(@RequestBody String query) throws InterruptedException {
+        String result = documentService.chat(query);
+        return result;
     }
 }
